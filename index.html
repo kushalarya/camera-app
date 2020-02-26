@@ -118,9 +118,11 @@
 
 
         </style>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="css/styles.css">
         <script>
             $(document).ready(function() {
-                
+
 
 
                 $("#imageMap").click(function(e){
@@ -141,7 +143,7 @@
                     var imagemap_height = $('#imageMap').height();
 
 
-			
+
 
 
 
@@ -160,7 +162,7 @@
                         .css("width","100px")
                         .css("height","100px")
                         .show();
-			
+
                     }
                     else if(top_distance + mapper_height > imagemap_height){
                         $('#mapper').css("left", left_distance)
@@ -182,7 +184,7 @@
 
                     $("#mapper").resizable({ containment: "parent" });
                     $("#mapper").draggable({ containment: "parent" });
-                    
+
                 });
 
 
@@ -198,7 +200,7 @@
 
                     $(this).find(".tagged_title").css("display","block");
                 }
-			
+
 
             });
 
@@ -208,7 +210,7 @@
                     $(this).css("border","none");
                     $(this).find(".tagged_title").css("display","none");
                 }
-			
+
 
             });
 
@@ -241,7 +243,7 @@
                 $("#mapper").hide();
                 $("#title").val('');
                 $("#form_panel").hide();
-                
+
 
             };
 
@@ -260,7 +262,7 @@
                 $(".tagged").css("border","none");
                 $(".tagged_title").css("display","none");
             };
-		
+
             var editTag = function(obj){
 
                 $(obj).parent().parent().draggable( 'disable' );
@@ -282,6 +284,30 @@
         </script>
     </head>
     <body>
+
+      <div class="container">
+
+        <div class="app">
+
+          <a href="#" id="start-camera" class="visible">Touch here to start the app.</a>
+          <video id="camera-stream"></video>
+          <img id="snap">
+
+          <p id="error-message"></p>
+
+          <div class="controls">
+            <a href="#" id="delete-photo" title="Delete Photo" class="disabled"><i class="material-icons">delete</i></a>
+            <a href="#" id="take-photo" title="Take Photo"><i class="material-icons">camera_alt</i></a>
+            <a href="#" id="download-photo" download="selfie.png" title="Save Photo" class="disabled"><i class="material-icons">file_download</i></a>
+          </div>
+
+          <!-- Hidden canvas element. Used for taking snapshot of video. -->
+          <canvas></canvas>
+
+        </div>
+
+      </div>
+
         <div id='main_panel'>
 
              <div style='margin: auto; width: 600px;'>
@@ -319,9 +345,8 @@
                 <input type="button" value="Hide Tags" onclick="hideTags()" />
             </div>
         </div>
+
+        <script src="js/script.js"></script>
+
     </body>
 </html>
-
-
-
-
