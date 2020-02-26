@@ -6,6 +6,7 @@ function setup() {
 
   createCanvas(320, 400);
   background(100);
+
   video = createCapture(VIDEO);
   video.size(320, 240);
   video.position(0, 0);
@@ -35,6 +36,6 @@ function draw() {
 
   if (snapshot.width > 0) { //snapshot seen as object instead of array, so use object charatersitic to check
     //print(snapshot.length);
-    image(snapshot, 0, 0, 320, 240);
+    image(snapshot, 0, 0);
   }
 }
