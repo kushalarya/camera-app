@@ -4,12 +4,14 @@ var snapshot = [];
 
 function setup() {
 
-  createCanvas(320, 400);
+  createCanvas(windowWidth, windowHeight);
   background(100);
 
   video = createCapture(VIDEO);
-  video.size(320, 240);
+
   video.position(0, 0);
+  video.size(windowWidth, windowHeight);
+
 
   buttonSnap = createButton('SNAP');
   buttonSnap.position(100, 300);
@@ -36,6 +38,6 @@ function draw() {
 
   if (snapshot.width > 0) { //snapshot seen as object instead of array, so use object charatersitic to check
     //print(snapshot.length);
-    image(snapshot, 0, 0);
+    image(snapshot, 0, 0, windowWidth, windowHeight);
   }
 }
