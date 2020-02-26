@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // References to all the element we will need.
     var video = document.querySelector('#camera-stream'),
-        image = document.querySelector('#snap'),
+        image = document.querySelector('#imageMap'),
         start_camera = document.querySelector('#start-camera'),
         controls = document.querySelector('.controls'),
         take_photo_btn = document.querySelector('#take-photo'),
