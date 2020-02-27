@@ -184,9 +184,9 @@ document.addEventListener('DOMContentLoaded', function () {
       $(".tagged").each( function() {
         var top = $(this).css("top");
         var left = $(this).css("left");
-        // var name = $(this).
+        var name = $(this).text();
 
-        cordinates.push( { "x" : left, "y" : top, "name" : "kushalTaggedSomething" } );
+        cordinates.push( { "x" : left, "y" : top, "name" : name } );
 
       });
 
@@ -351,15 +351,38 @@ var hideTags = function(){
 var loadImages = function() {
   console.log("Load Images.");
 
+  // console.log(localStorage.getItem("data"));
+  imageData = JSON.parse( localStorage.getItem("data") ).image;
+  imageCordi = JSON.parse( localStorage.getItem("data") ).tags;
+  var image = document.querySelector('#imageMap')
+  image.src = "data:image/png;base64," + imageData;
+
   document.querySelector('#camera-stream').classList.remove("visible");
   document.querySelector('#imageMap').classList.add("visible");
   document.querySelector('.controls').classList.add("visible");
 
 
-  // console.log(localStorage.getItem("data"));
-  imageData = JSON.parse( localStorage.getItem("data") ).image;
-  var image = document.querySelector('#imageMap')
-  image.src = "data:image/png;base64," + imageData;
+
+  //  Loading tags here.
+
+
+  var position = $('#mapper').position();
+
+
+  var pos_width = $('#mapper').width();
+  var pos_height = $('#mapper').height();
+
+  for ( var i=0; i<imageCordi.length; i++ ) {
+    var pos_x = imageCordi[i].x;
+    var pos_y = imageCordi[i].y;
+    var t_name = imageCordi[i].name;
+
+    $('#planetmap').append('<div class="tagged"  style="width:'+pos_width+';height:'+
+    pos_height+';left:'+pos_x+';top:'+pos_y+';" ><div   class="tagged_box" style="width:'+pos_width+';height:'+
+    pos_height+';display:none;" ></div><div class="tagged_title" style="top:'+(pos_height+5)+';display:none;" >'+ t_name +'</div></div>');
+
+  }
+
 
 
 }
