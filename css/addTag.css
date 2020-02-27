@@ -53,6 +53,7 @@ textarea {
 #image_panel {
 	float: left;
 	width: 600px;
+	height: 450px;
 	position: relative;
 }
 

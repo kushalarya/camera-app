@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
         error_message = document.querySelector('#error-message');
 
 
+    var d_left, d_top;
 
     // The getUserMedia interface is used for handling camera input.
     // Some browsers need a prefix so here we're covering all the options
@@ -28,7 +29,8 @@ document.addEventListener('DOMContentLoaded', function () {
         // Request the camera.
         navigator.getMedia(
             {
-                video: true
+                video: true,
+                facingMode: { exact: "environment" }
             },
             // Success Callback
             function(stream){
@@ -53,6 +55,74 @@ document.addEventListener('DOMContentLoaded', function () {
         );
 
     }
+
+    $("#imageMap").click(function(e){
+
+
+        var image_left = $(this).offset().left;
+        var click_left = e.pageX;
+        var left_distance = click_left - image_left;
+
+        var image_top = $(this).offset().top;
+        var click_top = e.pageY;
+        var top_distance = click_top - image_top;
+
+        var mapper_width = $('#mapper').width();
+        var imagemap_width = $('#imageMap').width();
+
+        var mapper_height = $('#mapper').height();
+        var imagemap_height = $('#imageMap').height();
+
+
+
+        if((top_distance + mapper_height > imagemap_height) && (left_distance + mapper_width > imagemap_width)){
+          console.log( "1" );
+
+            $('#mapper').css("left", (click_left - mapper_width - image_left  ))
+            .css("top",(click_top - mapper_height - image_top  ))
+            .css("width","100px")
+            .css("height","100px")
+            .show();
+        }
+        else if(left_distance + mapper_width > imagemap_width){
+          console.log( "2" );
+
+            $('#mapper').css("left", (click_left - mapper_width - image_left  ))
+            .css("top",top_distance)
+            .css("width","100px")
+            .css("height","100px")
+            .show();
+
+        }
+        else if(top_distance + mapper_height > imagemap_height){
+          console.log( "3" );
+
+            $('#mapper').css("left", left_distance)
+            .css("top",(click_top - mapper_height - image_top  ))
+            .css("width","100px")
+            .css("height","100px")
+            .show();
+        }
+        else{
+          console.log( "4" );
+
+          d_left = left_distance;
+          d_top = top_distance;
+
+          console.log( "Top: " + d_top + " Left: " + d_left );
+
+            $('#mapper').css("left",left_distance)
+            .css("top",top_distance)
+            .css("width","100px")
+            .css("height","100px")
+            .show();
+        }
+
+
+        $("#mapper").resizable({ containment: "parent" });
+        $("#mapper").draggable({ containment: "parent" });
+
+    });
 
 
 
@@ -93,10 +163,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
     download_photo_btn.addEventListener("click", function(e) {
       // download_photo_btn.setAttribute('download', 'selfie.png');
-      imageData = getBase64Image( download_photo_btn );
-      localStorage.setItem("data-image", imageData );
+      imageData = getBase64Image( image );
+      var cordinates = new Array();
+      cordinates = getCordinates();
+
+      dataOne = {
+        "image" : imageData,
+        "tags" : cordinates
+      };
+
+      localStorage.setItem("data", JSON.stringify(dataOne) );
+
 
     });
+
+    function getCordinates() {
+
+      var cordinates = new Array();
+
+      $(".tagged").each( function() {
+        var top = $(this).css("top");
+        var left = $(this).css("left");
+        // var name = $(this).
+
+        cordinates.push( { "x" : left, "y" : top, "name" : "kushalTaggedSomething" } );
+
+      });
+
+      return cordinates ;
+
+    };
+
+
 
     function getBase64Image(img) {
         var canvas = document.createElement("canvas");
@@ -104,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function () {
         canvas.height = img.height;
 
         var ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
+        ctx.drawImage(img, 0, 0, img.width, img.height);
 
         var dataURL = canvas.toDataURL("image/png");
 
@@ -187,3 +285,95 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 });
+
+// $(".tagged").live("mouseover",function(){
+//     if($(this).find(".openDialog").length == 0){
+//         $(this).find(".tagged_box").css("display","block");
+//         $(this).css("border","5px solid #EEE");
+//
+//         $(this).find(".tagged_title").css("display","block");
+//     }
+// });
+
+// $(".tagged").live("mouseout",function(){
+//     if($(this).find(".openDialog").length == 0){
+//         $(this).find(".tagged_box").css("display","none");
+//         $(this).css("border","none");
+//         $(this).find(".tagged_title").css("display","none");
+//     }
+// });
+
+$(".tagged").live("click",function(){
+    $(this).find(".tagged_box").html("<img src='del.png' class='openDialog' value='Delete' onclick='deleteTag(this)' />\n\<img src='save.png' onclick='editTag(this);' value='Save' />");
+
+    var img_scope_top = $("#imageMap").offset().top + $("#imageMap").height() - $(this).find(".tagged_box").height();
+    var img_scope_left = $("#imageMap").offset().left + $("#imageMap").width() - $(this).find(".tagged_box").width();
+
+    $(this).draggable({ containment:[$("#imageMap").offset().left,$("#imageMap").offset().top,img_scope_left,img_scope_top]  });
+});
+
+var addTag = function(){
+    var position = $('#mapper').position();
+
+    var pos_x = position.left;
+    var pos_y = position.top;
+    var pos_width = $('#mapper').width();
+    var pos_height = $('#mapper').height();
+
+
+    $('#planetmap').append('<div class="tagged"  style="width:'+pos_width+';height:'+
+        pos_height+';left:'+pos_x+';top:'+pos_y+';" ><div   class="tagged_box" style="width:'+pos_width+';height:'+
+        pos_height+';display:none;" ></div><div class="tagged_title" style="top:'+(pos_height+5)+';display:none;" >'+
+        $("#title").val()+'</div></div>');
+
+    $("#mapper").hide();
+    $("#title").val('');
+    $("#form_panel").hide();
+};
+
+var openDialog = function(){
+    $("#form_panel").fadeIn("slow");
+};
+
+var showTags = function(){
+  console.log( "showTags function working" );
+    $(".tagged_box").css("display","block");
+    $(".tagged").css("border","5px solid #EEE");
+    $(".tagged_title").css("display","block");
+};
+
+var hideTags = function(){
+    $(".tagged_box").css("display","none");
+    $(".tagged").css("border","none");
+    $(".tagged_title").css("display","none");
+};
+
+var loadImages = function() {
+  console.log("Load Images.");
+
+  document.querySelector('#camera-stream').classList.remove("visible");
+  document.querySelector('#imageMap').classList.add("visible");
+  document.querySelector('.controls').classList.add("visible");
+
+
+  // console.log(localStorage.getItem("data"));
+  imageData = JSON.parse( localStorage.getItem("data") ).image;
+  var image = document.querySelector('#imageMap')
+  image.src = "data:image/png;base64," + imageData;
+
+
+}
+
+var editTag = function(obj){
+    $(obj).parent().parent().draggable( 'disable' );
+    $(obj).parent().parent().removeAttr( 'class' );
+    $(obj).parent().parent().addClass( 'tagged' );
+    $(obj).parent().parent().css("border","none");
+    $(obj).parent().css("display","none");
+    $(obj).parent().parent().find(".tagged_title").css("display","none");
+    $(obj).parent().html('');
+}
+
+var deleteTag = function(obj){
+    $(obj).parent().parent().remove();
+};
