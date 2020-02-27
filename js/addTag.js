@@ -21,10 +21,9 @@ $(document).ready(function() {
 
 
 
-
-
-
         if((top_distance + mapper_height > imagemap_height) && (left_distance + mapper_width > imagemap_width)){
+          console.log( "1" );
+
             $('#mapper').css("left", (click_left - mapper_width - image_left  ))
             .css("top",(click_top - mapper_height - image_top  ))
             .css("width","100px")
@@ -32,7 +31,7 @@ $(document).ready(function() {
             .show();
         }
         else if(left_distance + mapper_width > imagemap_width){
-
+          console.log( "2" );
 
             $('#mapper').css("left", (click_left - mapper_width - image_left  ))
             .css("top",top_distance)
@@ -42,6 +41,8 @@ $(document).ready(function() {
 
         }
         else if(top_distance + mapper_height > imagemap_height){
+          console.log( "3" );
+
             $('#mapper').css("left", left_distance)
             .css("top",(click_top - mapper_height - image_top  ))
             .css("width","100px")
@@ -49,7 +50,7 @@ $(document).ready(function() {
             .show();
         }
         else{
-
+          console.log( "4" );
 
             $('#mapper').css("left",left_distance)
             .css("top",top_distance)
@@ -70,41 +71,34 @@ $(document).ready(function() {
 
 
 
-$(".tagged").live("mouseover",function(){
-    if($(this).find(".openDialog").length == 0){
-        $(this).find(".tagged_box").css("display","block");
-        $(this).css("border","5px solid #EEE");
+// $(".tagged").live("mouseover",function(){
+//     if($(this).find(".openDialog").length == 0){
+//         $(this).find(".tagged_box").css("display","block");
+//         $(this).css("border","5px solid #EEE");
+//
+//         $(this).find(".tagged_title").css("display","block");
+//     }
+// });
 
-        $(this).find(".tagged_title").css("display","block");
-    }
-
-
-});
-
-$(".tagged").live("mouseout",function(){
-    if($(this).find(".openDialog").length == 0){
-        $(this).find(".tagged_box").css("display","none");
-        $(this).css("border","none");
-        $(this).find(".tagged_title").css("display","none");
-    }
-
-
-});
+// $(".tagged").live("mouseout",function(){
+//     if($(this).find(".openDialog").length == 0){
+//         $(this).find(".tagged_box").css("display","none");
+//         $(this).css("border","none");
+//         $(this).find(".tagged_title").css("display","none");
+//     }
+// });
 
 $(".tagged").live("click",function(){
-    $(this).find(".tagged_box").html("<img src='del.png' class='openDialog' value='Delete' onclick='deleteTag(this)' />\n\
-<img src='save.png' onclick='editTag(this);' value='Save' />");
+    $(this).find(".tagged_box").html("<img src='del.png' class='openDialog' value='Delete' onclick='deleteTag(this)' />\n\<img src='save.png' onclick='editTag(this);' value='Save' />");
 
     var img_scope_top = $("#imageMap").offset().top + $("#imageMap").height() - $(this).find(".tagged_box").height();
     var img_scope_left = $("#imageMap").offset().left + $("#imageMap").width() - $(this).find(".tagged_box").width();
 
     $(this).draggable({ containment:[$("#imageMap").offset().left,$("#imageMap").offset().top,img_scope_left,img_scope_top]  });
-
 });
 
 var addTag = function(){
     var position = $('#mapper').position();
-
 
     var pos_x = position.left;
     var pos_y = position.top;
@@ -120,8 +114,6 @@ var addTag = function(){
     $("#mapper").hide();
     $("#title").val('');
     $("#form_panel").hide();
-
-
 };
 
 var openDialog = function(){
@@ -141,7 +133,6 @@ var hideTags = function(){
 };
 
 var editTag = function(obj){
-
     $(obj).parent().parent().draggable( 'disable' );
     $(obj).parent().parent().removeAttr( 'class' );
     $(obj).parent().parent().addClass( 'tagged' );
@@ -149,7 +140,6 @@ var editTag = function(obj){
     $(obj).parent().css("display","none");
     $(obj).parent().parent().find(".tagged_title").css("display","none");
     $(obj).parent().html('');
-
 }
 
 var deleteTag = function(obj){
