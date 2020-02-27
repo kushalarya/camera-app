@@ -91,6 +91,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
+    download_photo_btn.addEventListener("click", function(e) {
+      // download_photo_btn.setAttribute('download', 'selfie.png');
+      imageData = getBase64Image( download_photo_btn );
+      localStorage.setItem("data-image", imageData );
+
+    });
+
+    function getBase64Image(img) {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+
+        var dataURL = canvas.toDataURL("image/png");
+
+        return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+    }
+
 
     delete_photo_btn.addEventListener("click", function(e){
 
@@ -159,11 +179,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function hideUI(){
         // Helper function for clearing the app UI.
-
         controls.classList.remove("visible");
         start_camera.classList.remove("visible");
         video.classList.remove("visible");
-        snap.classList.remove("visible");
+        imageMap.classList.remove("visible");
         error_message.classList.remove("visible");
     }
 

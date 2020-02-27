@@ -121,6 +121,7 @@ var openDialog = function(){
 };
 
 var showTags = function(){
+  console.log( "showTags working" );
     $(".tagged_box").css("display","block");
     $(".tagged").css("border","5px solid #EEE");
     $(".tagged_title").css("display","block");
