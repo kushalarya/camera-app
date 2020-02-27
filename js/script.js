@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
         navigator.getMedia(
             {
                 video: true,
-                facingMode: { exact: "environment" }
+                facingMode: { exact: "user" }
             },
             // Success Callback
             function(stream){
