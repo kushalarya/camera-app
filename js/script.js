@@ -187,7 +187,6 @@ document.addEventListener('DOMContentLoaded', function () {
         var name = $(this).text();
 
         cordinates.push( { "x" : left, "y" : top, "name" : name } );
-
       });
 
       return cordinates ;
