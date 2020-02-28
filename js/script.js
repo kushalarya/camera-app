@@ -15,7 +15,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 };
 
-  loadImages( getUrlParameter('img') );
+
+
 
     // References to all the element we will need.
     var video = document.querySelector('#camera-stream'),
@@ -38,42 +39,53 @@ document.addEventListener('DOMContentLoaded', function () {
     navigator.mozGetUserMedia ||
     navigator.msGetUserMedia);
 
+    var param = getUrlParameter('img');
+    if ( param != null ) {
+      // document.querySelector('#imageMap').setAttribute('src', snap);
+      document.querySelector('#imageMap').classList.add("visible");
+      document.querySelector('#camera-stream').pause();
+      loadImages( param );
+      showTags();
+    }  else {
 
-    if(!navigator.getMedia){
-        displayErrorMessage("Your browser doesn't have support for the navigator.getUserMedia interface.");
-    } else{
+      if(!navigator.getMedia){
+          displayErrorMessage("Your browser doesn't have support for the navigator.getUserMedia interface.");
+      } else {
 
-        // Request the camera.
-        navigator.getMedia(
-            {
-                video: true,
-                facingMode: {
-                  exact: 'environment'
-                }
-            },
-            // Success Callback
-            function(stream){
+          // Request the camera.
+          navigator.getMedia(
+              {
+                  video: true,
+                  facingMode: {
+                    exact: 'environment'
+                  }
+              },
+              // Success Callback
+              function(stream){
 
-              // const mediaStream = new MediaStream();
+                // const mediaStream = new MediaStream();
 
-                // Create an object URL for the video stream and
-                // set it as src of our HTLM video element.
-                video.srcObject = stream;
+                  // Create an object URL for the video stream and
+                  // set it as src of our HTLM video element.
+                  video.srcObject = stream;
 
-                // Play the video element to start the stream.
-                video.play();
-                video.onplay = function() {
-                    showVideo();
-                };
+                  // Play the video element to start the stream.
+                  video.play();
+                  video.onplay = function() {
+                      showVideo();
+                  };
 
-            },
-            // Error Callback
-            function(err){
-                displayErrorMessage("There was an error with accessing the camera stream: " + err.name, err);
-            }
-        );
+              },
+              // Error Callback
+              function(err){
+                  displayErrorMessage("There was an error with accessing the camera stream: " + err.name, err);
+              }
+          );
+      }
 
     }
+
+
 
     $("#imageMap").click(function(e){
 
