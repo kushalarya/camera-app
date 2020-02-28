@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if ( param != null ) {
       // document.querySelector('#imageMap').setAttribute('src', snap);
       document.querySelector('#imageMap').classList.add("visible");
+      document.querySelector('#start-camera').classList.remove("visible")
       document.querySelector('#camera-stream').pause();
       loadImages( param );
       showTags();
