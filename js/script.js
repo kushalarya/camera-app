@@ -397,6 +397,8 @@ var loadImages = function( image ) {
   var pos_width = $('#mapper').width();
   var pos_height = $('#mapper').height();
 
+  $('#planetmap').append("");
+
   for ( var i=0; i<imageCordi.length; i++ ) {
     var pos_x = imageCordi[i].x;
     var pos_y = imageCordi[i].y;
