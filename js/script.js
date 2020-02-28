@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+  var image_d = getUrlParameter('img');
+  console.log( " -------- " + image_d );
+
     // References to all the element we will need.
     var video = document.querySelector('#camera-stream'),
         image = document.querySelector('#imageMap'),
@@ -12,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     var d_left, d_top;
+    var data_i = 0;
 
     // The getUserMedia interface is used for handling camera input.
     // Some browsers need a prefix so here we're covering all the options
@@ -23,8 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if(!navigator.getMedia){
         displayErrorMessage("Your browser doesn't have support for the navigator.getUserMedia interface.");
-    }
-    else{
+    } else{
 
         // Request the camera.
         navigator.getMedia(
@@ -169,13 +172,13 @@ document.addEventListener('DOMContentLoaded', function () {
       var cordinates = new Array();
       cordinates = getCordinates();
 
-      dataOne = {
+      data = {
         "image" : imageData,
         "tags" : cordinates
       };
 
-      localStorage.setItem("data", JSON.stringify(dataOne) );
-
+      localStorage.setItem("data_" + data_i, JSON.stringify(data) );
+      data_i++;
 
     });
 
@@ -349,6 +352,25 @@ var hideTags = function(){
     $(".tagged_title").css("display","none");
 };
 
+var loadData = function() {
+
+  var dataArray = new Array();
+
+  for ( var k=0; k<10; k++ ) {
+
+    d = localStorage.getItem("data_" + k);
+    if ( d != null || d !== "" ) {
+      dataArray[k] = localStorage.getItem("data_" + k);
+    } else {
+      break;
+    }
+
+  }
+
+  console.log( dataArray );
+
+}
+
 var loadImages = function() {
   console.log("Load Images.");
 
@@ -362,13 +384,8 @@ var loadImages = function() {
   document.querySelector('#imageMap').classList.add("visible");
   document.querySelector('.controls').classList.add("visible");
 
-
-
   //  Loading tags here.
-
-
   var position = $('#mapper').position();
-
 
   var pos_width = $('#mapper').width();
   var pos_height = $('#mapper').height();
