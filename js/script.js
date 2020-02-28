@@ -15,8 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 };
 
-  var image_d = getUrlParameter('img');
-  console.log( " -------- " + image_d );
+  loadImages( getUrlParameter('img') );
 
     // References to all the element we will need.
     var video = document.querySelector('#camera-stream'),
@@ -367,31 +366,12 @@ var hideTags = function(){
     $(".tagged_title").css("display","none");
 };
 
-var loadData = function() {
-
-  var dataArray = new Array();
-
-  for ( var k=0; k<10; k++ ) {
-
-    d = localStorage.getItem("data_" + k);
-    if ( d != null || d !== "" ) {
-      dataArray[k] = localStorage.getItem("data_" + k);
-    } else {
-      break;
-    }
-
-  }
-
-  console.log( dataArray );
-
-}
-
-var loadImages = function() {
+var loadImages = function( image ) {
   console.log("Load Images.");
 
   // console.log(localStorage.getItem("data"));
-  imageData = JSON.parse( localStorage.getItem("data") ).image;
-  imageCordi = JSON.parse( localStorage.getItem("data") ).tags;
+  imageData = JSON.parse( localStorage.getItem(image) ).image;
+  imageCordi = JSON.parse( localStorage.getItem(image) ).tags;
   var image = document.querySelector('#imageMap')
   image.src = "data:image/png;base64," + imageData;
 
