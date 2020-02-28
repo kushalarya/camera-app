@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     delete_photo_btn.addEventListener("click", function(e){
 
-
+        $('#planetmap').empty();
         e.preventDefault();
 
         // Hide image.
@@ -271,7 +271,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function takeSnapshot(){
 
-      data_i = 0;
         // Here we're using a trick that involves a hidden canvas element.
 
         var hidden_canvas = document.querySelector('canvas'),
